@@ -4,20 +4,28 @@
 #
 Name     : perl-Business-ISMN
 Version  : 1.132
-Release  : 2
+Release  : 3
 URL      : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.132.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.132.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libb/libbusiness-ismn-perl/libbusiness-ismn-perl_1.131-1.debian.tar.xz
 Summary  : 'work with International Standard Music Numbers'
 Group    : Development/Tools
 License  : Artistic-1.0 Artistic-2.0 GPL-1.0
-Requires: perl-Business-ISMN-license
-Requires: perl-Business-ISMN-man
-Requires: perl(Tie::Cycle)
+Requires: perl-Business-ISMN-license = %{version}-%{release}
+BuildRequires : buildreq-cpan
 BuildRequires : perl(Tie::Cycle)
 
 %description
 See the tests in the t/ directory for examples until I add some more.
+
+%package dev
+Summary: dev components for the perl-Business-ISMN package.
+Group: Development
+Provides: perl-Business-ISMN-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-Business-ISMN package.
+
 
 %package license
 Summary: license components for the perl-Business-ISMN package.
@@ -27,19 +35,11 @@ Group: Default
 license components for the perl-Business-ISMN package.
 
 
-%package man
-Summary: man components for the perl-Business-ISMN package.
-Group: Default
-
-%description man
-man components for the perl-Business-ISMN package.
-
-
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n Business-ISMN-1.132
-mkdir -p %{_topdir}/BUILD/Business-ISMN-1.132/deblicense/
+cd ..
+%setup -q -T -D -n Business-ISMN-1.132 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Business-ISMN-1.132/deblicense/
 
 %build
@@ -64,13 +64,13 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/perl-Business-ISMN
-cp LICENSE %{buildroot}/usr/share/doc/perl-Business-ISMN/LICENSE
-cp deblicense/copyright %{buildroot}/usr/share/doc/perl-Business-ISMN/deblicense_copyright
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-Business-ISMN
+cp LICENSE %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/LICENSE
+cp deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/deblicense_copyright
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -79,15 +79,15 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/Business/ISMN.pm
-/usr/lib/perl5/site_perl/5.26.1/Business/ISMN/Data.pm
+/usr/lib/perl5/vendor_perl/5.26.1/Business/ISMN.pm
+/usr/lib/perl5/vendor_perl/5.26.1/Business/ISMN/Data.pm
 
-%files license
-%defattr(-,root,root,-)
-/usr/share/doc/perl-Business-ISMN/LICENSE
-/usr/share/doc/perl-Business-ISMN/deblicense_copyright
-
-%files man
+%files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/Business::ISMN.3
 /usr/share/man/man3/Business::ISMN::Data.3
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-Business-ISMN/LICENSE
+/usr/share/package-licenses/perl-Business-ISMN/deblicense_copyright
