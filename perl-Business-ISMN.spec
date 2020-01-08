@@ -4,7 +4,7 @@
 #
 Name     : perl-Business-ISMN
 Version  : 1.201
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.201.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.201.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libb/libbusiness-ismn-perl/libbusiness-ismn-perl_1.131-1.debian.tar.xz
@@ -12,6 +12,7 @@ Summary  : 'work with International Standard Music Numbers'
 Group    : Development/Tools
 License  : Artistic-1.0 Artistic-2.0 GPL-1.0
 Requires: perl-Business-ISMN-license = %{version}-%{release}
+Requires: perl-Business-ISMN-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 BuildRequires : perl(Tie::Cycle)
 
@@ -22,6 +23,7 @@ See the tests in the t/ directory for examples until I add some more.
 Summary: dev components for the perl-Business-ISMN package.
 Group: Development
 Provides: perl-Business-ISMN-devel = %{version}-%{release}
+Requires: perl-Business-ISMN = %{version}-%{release}
 
 %description dev
 dev components for the perl-Business-ISMN package.
@@ -35,18 +37,28 @@ Group: Default
 license components for the perl-Business-ISMN package.
 
 
+%package perl
+Summary: perl components for the perl-Business-ISMN package.
+Group: Default
+Requires: perl-Business-ISMN = %{version}-%{release}
+
+%description perl
+perl components for the perl-Business-ISMN package.
+
+
 %prep
 %setup -q -n Business-ISMN-1.201
-cd ..
-%setup -q -T -D -n Business-ISMN-1.201 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libbusiness-ismn-perl_1.131-1.debian.tar.xz
+cd %{_builddir}/Business-ISMN-1.201
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Business-ISMN-1.201/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/Business-ISMN-1.201/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -56,7 +68,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -65,8 +77,8 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Business-ISMN
-cp LICENSE %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/LICENSE
-cp deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/deblicense_copyright
+cp %{_builddir}/Business-ISMN-1.201/LICENSE %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/5001be8844666d7a7450f0ad5dd864fc7e2fa514
+cp %{_builddir}/Business-ISMN-1.201/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/11c8cf187a7784cdb888ba426eec64beae98de3d
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -79,8 +91,6 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/Business/ISMN.pm
-/usr/lib/perl5/vendor_perl/5.28.2/Business/ISMN/Data.pm
 
 %files dev
 %defattr(-,root,root,-)
@@ -89,5 +99,10 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/perl-Business-ISMN/LICENSE
-/usr/share/package-licenses/perl-Business-ISMN/deblicense_copyright
+/usr/share/package-licenses/perl-Business-ISMN/11c8cf187a7784cdb888ba426eec64beae98de3d
+/usr/share/package-licenses/perl-Business-ISMN/5001be8844666d7a7450f0ad5dd864fc7e2fa514
+
+%files perl
+%defattr(-,root,root,-)
+/usr/lib/perl5/vendor_perl/5.30.1/Business/ISMN.pm
+/usr/lib/perl5/vendor_perl/5.30.1/Business/ISMN/Data.pm
