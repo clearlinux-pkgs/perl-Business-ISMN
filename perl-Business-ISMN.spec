@@ -4,7 +4,7 @@
 #
 Name     : perl-Business-ISMN
 Version  : 1.201
-Release  : 12
+Release  : 13
 URL      : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.201.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.201.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libb/libbusiness-ismn-perl/libbusiness-ismn-perl_1.131-1.debian.tar.xz
@@ -78,7 +78,7 @@ make TEST_VERBOSE=1 test
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Business-ISMN
 cp %{_builddir}/Business-ISMN-1.201/LICENSE %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/5001be8844666d7a7450f0ad5dd864fc7e2fa514
-cp %{_builddir}/Business-ISMN-1.201/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/11c8cf187a7784cdb888ba426eec64beae98de3d
+cp %{_builddir}/debian/copyright %{buildroot}/usr/share/package-licenses/perl-Business-ISMN/11c8cf187a7784cdb888ba426eec64beae98de3d
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -104,5 +104,5 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.1/Business/ISMN.pm
-/usr/lib/perl5/vendor_perl/5.30.1/Business/ISMN/Data.pm
+/usr/lib/perl5/vendor_perl/5.30.2/Business/ISMN.pm
+/usr/lib/perl5/vendor_perl/5.30.2/Business/ISMN/Data.pm
