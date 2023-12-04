@@ -4,7 +4,7 @@
 #
 Name     : perl-Business-ISMN
 Version  : 1.203
-Release  : 24
+Release  : 25
 URL      : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.203.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BD/BDFOY/Business-ISMN-1.203.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libb/libbusiness-ismn-perl/libbusiness-ismn-perl_1.131-1.debian.tar.xz
