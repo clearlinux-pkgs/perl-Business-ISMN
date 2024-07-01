@@ -7,7 +7,7 @@
 #
 Name     : perl-Business-ISMN
 Version  : 1.204
-Release  : 26
+Release  : 27
 URL      : https://cpan.metacpan.org/authors/id/B/BR/BRIANDFOY/Business-ISMN-1.204.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/B/BR/BRIANDFOY/Business-ISMN-1.204.tar.gz
 Summary  : 'work with International Standard Music Numbers'
